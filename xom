@@ -3,7 +3,7 @@
 # By Tekin-Miz(WorldMoZara)
 source lang/zh_utf-8.lang
 function main(){
-    dialog --title "$title" --stderr --menu "$mainmenu_text" 16 55 10 1 "$mainmenu_opt1" 2 "$mainmenu_opt2" 2>$PREFIX/tmp/mainopt
+    dialog --title "$title" --no-cancel --stderr --menu "$mainmenu_text" 16 55 10 1 "$mainmenu_opt1" 2 "$mainmenu_opt2" 3 "$mainmenu_opt3" 4 "$mainmenu_exit" 2>$PREFIX/tmp/mainopt
     main_opt=$(cat $PREFIX/tmp/mainopt)
     case "$main_opt" in
         1)
@@ -12,6 +12,12 @@ function main(){
         2)
             ;;
         3)
+            extras
+            ;;
+        4)
+            dialog --clear
+            clear -x
+            exit 0
             ;;
         *)
             ;;
@@ -19,16 +25,41 @@ function main(){
     rm $PREFIX/tmp/mainopt
 }
 function tools(){
-    dialog --title "$title" --stderr --menu "$toolmenu_text" 16 55 10  1 "$toolmenu_opt1" 2 "$toolmenu_opt2" 2>$PREFIX/tmp/toolopt
-    tool_opt=$(cat $PREFIX/tmp/toolopt)
-    case $tool_opt in
-        1)
-            ;;
-        2)
-            ;;
-        *)
-            ;;
-    esac
-    rm $PREFIX/tmp/toolopt
+    dialog --title "$title" --stderr --menu "$toolmenu_text" 16 55 10 1 "$toolmenu_opt1" 2 "$toolmenu_opt2" 2>$PREFIX/tmp/toolopt
+    if [ $? -ne 0 ]
+    then
+        rm $PREFIX/tmp/toolopt
+        main
+    else
+        tool_opt=$(cat $PREFIX/tmp/toolopt)
+        case $tool_opt in
+            1)
+                ;;
+            2)
+                ;;
+            *)
+                ;;
+        esac
+        rm $PREFIX/tmp/toolopt
+    fi
+}
+function extras(){
+    dialog --title "$title" --stderr --menu "$extramenu_text" 16 55 10  1 "$extramenu_opt1" 2 "$extramenu_opt2" 2>$PREFIX/tmp/extraopt
+    if [ $? -ne 0 ]
+    then
+        rm $PREFIX/tmp/extraopt
+        main
+    else
+        tool_opt=$(cat $PREFIX/tmp/extraopt)
+        case $tool_opt in
+            1)
+                ;;
+            2)
+                ;;
+            *)
+                ;;
+        esac
+        rm $PREFIX/tmp/extraopt
+    fi
 }
 main
