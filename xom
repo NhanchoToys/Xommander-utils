@@ -61,6 +61,14 @@ function vision(){
                 uvimrc basic
                 ;;
             3)
+                dialog --title "$title" --stderr --yesno "$uvimrc_warn" 16 55
+                if [ $? -eq 0 ]
+                then
+                    git clone https://github.com/gpakosz/.tmux.git ~/.tmux/
+                    ln -s -f .tmux/.tmux.conf ~/.tmux.conf
+                    cp .tmux/.tmux.conf.local ~/
+                fi
+                vision
                 ;;
             *)
                 ;;
@@ -101,11 +109,9 @@ function uvimrc(){
                 sh ~/.vim_runtime/install_basic_vimrc.sh
                 ;;
             *)
-                exit 114
                 ;;
         esac
-    else
-        exit 514
     fi
+    vision
 }
 main
