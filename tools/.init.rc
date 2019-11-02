@@ -1,0 +1,16 @@
+alias q=exit
+alias v=vim
+alias cls=clear
+alias clx='clear -x'
+alias date='date +"%Y年%m月%d日 第%W周 %a %H时%M分%S秒"'
+alias mkfile='echo >>'
+alias mkscript='echo -e "#!/bin/bash\n" >>'
+alias mf='mkfile'
+alias rmr='rm -r'
+alias rmf='rm -f'
+alias rmrf='rm -rf'
+alias ping='ping -c 16 -W 800'
+alias tree='tree -hpus | less'
+alias gin='git init'
+alias md='mkdir -p'
+

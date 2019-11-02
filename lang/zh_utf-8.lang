@@ -1,0 +1,6 @@
+title='Xommander-终端配置工具'
+mainmenu_text='请选择一个分类：'
+mainmenu_opt1='工具'
+mainmenu_opt2='视觉'
+toolmenu_text='请选择一项操作：'
+toolmenu_opt1='超级 .init.rc'

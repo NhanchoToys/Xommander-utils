@@ -1,0 +1,6 @@
+title='Xommander-TermConfig Tools'
+mainmenu_text='Please select a category:'
+mainmenu_opt1='Tools'
+mainmenu_opt2='Vision'
+toolmenu_text='Please select an operation:'
+toolmenu_opt1='Super .init.rc'
