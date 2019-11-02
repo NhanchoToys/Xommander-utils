@@ -2,7 +2,8 @@ alias q=exit
 alias v=vim
 alias cls=clear
 alias clx='clear -x'
-alias date='date +"%Y年%m月%d日 第%W周 %a %H时%M分%S秒"'
+# For Chinese user
+# alias date='date +"%Y年%m月%d日 第%W周 %a %H时%M分%S秒"'
 alias mkfile='echo >>'
 alias mkscript='echo -e "#!/bin/bash\n" >>'
 alias mf='mkfile'
