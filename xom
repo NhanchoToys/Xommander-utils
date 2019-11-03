@@ -8,8 +8,8 @@ then
     istermux=1
 fi
 function main(){
-    dialog --title "$title" --no-cancel --stderr --menu "$mainmenu_text" 16 55 10 1 "$mainmenu_opt1" 2 "$mainmenu_opt2" 3 "$mainmenu_opt3" 4 "$mainmenu_exit" 2>$PREFIX/tmp/mainopt
-    main_opt=$(cat $PREFIX/tmp/mainopt)
+    dialog --title "$title" --no-cancel --stderr --menu "$mainmenu_text" 16 55 10 1 "$mainmenu_opt1" 2 "$mainmenu_opt2" 3 "$mainmenu_opt3" 4 "$mainmenu_exit" 2>$TMPDIR/xom/mainopt
+    main_opt=$(cat $TMPDIR/xom/mainopt)
     case "$main_opt" in
         1)
             tools
@@ -28,16 +28,16 @@ function main(){
         *)
             ;;
     esac
-    rm $PREFIX/tmp/mainopt
+    rm $TMPDIR/xom/mainopt
 }
 function tools(){
-    dialog --title "$title" --stderr --menu "$toolmenu_text" 16 55 10 1 "$toolmenu_opt1" 2 "$toolmenu_opt2" 2>$PREFIX/tmp/toolopt
+    dialog --title "$title" --stderr --menu "$toolmenu_text" 16 55 10 1 "$toolmenu_opt1" 2 "$toolmenu_opt2" 2>$TMPDIR/xom/toolopt
     if [ $? -ne 0 ]
     then
-        rm $PREFIX/tmp/toolopt
+        rm $TMPDIR/xom/toolopt
         main
     else
-        tool_opt=$(cat $PREFIX/tmp/toolopt)
+        tool_opt=$(cat $TMPDIR/xom/toolopt)
         case $tool_opt in
             1)
                 ;;
@@ -46,17 +46,17 @@ function tools(){
             *)
                 ;;
         esac
-        rm $PREFIX/tmp/toolopt
+        rm $TMPDIR/xom/toolopt
     fi
 }
 function vision(){
-    dialog --title "$title" --stderr --menu "$toolmenu_text" 16 55 10 1 "$visimenu_opt1" 2 "$visimenu_opt2" 3 "$visimenu_opt3" 2>$PREFIX/tmp/visiopt
+    dialog --title "$title" --stderr --menu "$toolmenu_text" 16 55 10 1 "$visimenu_opt1" 2 "$visimenu_opt2" 3 "$visimenu_opt3" 2>$TMPDIR/xom/visiopt
     if [ $? -ne 0 ]
     then
-        rm $PREFIX/tmp/visiopt
+        rm $TMPDIR/xom/visiopt
         main
     else
-        visi_opt=$(cat $PREFIX/tmp/visiopt)
+        visi_opt=$(cat $TMPDIR/xom/visiopt)
         case $visi_opt in
             1)
                 uvimrc awesome
@@ -77,17 +77,17 @@ function vision(){
             *)
                 ;;
         esac
-        rm $PREFIX/tmp/visiopt
+        rm $TMPDIR/xom/visiopt
     fi
 }
 function extras(){
-    dialog --title "$title" --stderr --menu "$extramenu_text" 16 55 10 1 "$extramenu_opt1" 2 "$extramenu_opt2" 2>$PREFIX/tmp/extraopt
+    dialog --title "$title" --stderr --menu "$extramenu_text" 16 55 10 1 "$extramenu_opt1" 2 "$extramenu_opt2" 2>$TMPDIR/xom/extraopt
     if [ $? -ne 0 ]
     then
-        rm $PREFIX/tmp/extraopt
+        rm $TMPDIR/xom/extraopt
         main
     else
-        extra_opt=$(cat $PREFIX/tmp/extraopt)
+        extra_opt=$(cat $TMPDIR/xom/extraopt)
         case $extra_opt in
             1)
                 if [ $istermux -eq 1 ]
@@ -109,7 +109,7 @@ function extras(){
             *)
                 ;;
         esac
-        rm $PREFIX/tmp/extraopt
+        rm $TMPDIR/xom/extraopt
     fi
 }
 function uvimrc(){
