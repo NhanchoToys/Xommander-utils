@@ -65,7 +65,7 @@ function vision(){
                 uvimrc basic
                 ;;
             3)
-                dialog --title "$title" --stderr --yesno "$uvimrc_warn" 16 55
+                dialog --title "$title" --stderr --defaultno --yesno "$uvimrc_warn" 16 55
                 if [ $? -eq 0 ]
                 then
                     git clone https://github.com/gpakosz/.tmux.git ~/.tmux/
@@ -113,7 +113,7 @@ function extras(){
     fi
 }
 function uvimrc(){
-    dialog --title "$title" --stderr --yesno "$uvimrc_warn" 16 55
+    dialog --title "$title" --stderr --defaultno --yesno "$uvimrc_warn" 16 55
     if [ $? -eq 0 ]
     then
         case $1 in
