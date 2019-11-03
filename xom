@@ -55,6 +55,7 @@ function tools(){
                     mkdir -p $PREFIX/etc/fish
                     echo -e "\nsource ~/.init.rc" >> $PREFIX/etc/fish/config.fish
                 fi
+                tools
                 ;;
             2)
                 ;;
@@ -75,17 +76,23 @@ function vision(){
         case $visi_opt in
             1)
                 uvimrc awesome
+                vision
                 ;;
             2)
                 uvimrc basic
+                vision
                 ;;
             3)
                 dialog --title "$title" --stderr --defaultno --yesno "$uvimrc_warn" 16 55
                 if [ $? -eq 0 ]
                 then
-                    git clone https://github.com/gpakosz/.tmux.git ~/.tmux/
+                    progress "$download" 0
+                    git clone https://github.com/gpakosz/.tmux.git ~/.tmux
+                    progress "$install" 76
                     ln -s -f .tmux/.tmux.conf ~/.tmux.conf
                     cp .tmux/.tmux.conf.local ~/
+                    progress "$complete" 100
+                    sleep 1s
                 fi
                 vision
                 ;;
@@ -133,12 +140,20 @@ function uvimrc(){
     then
         case $1 in
             awesome)
+                progress "$download" 0
                 git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
+                progress "$install" 30
                 sh ~/.vim_runtime/install_awesome_vimrc.sh
+                progress "$installed" 100
+                sleep 1s
                 ;;
             basic)
+                progress "$download" 0
                 git clone --depth=1 https://github.com/amix/vimrc.git ~/.vim_runtime
+                progress "$install" 80
                 sh ~/.vim_runtime/install_basic_vimrc.sh
+                progress "$installed" 100
+                sleep 1s
                 ;;
             *)
                 ;;
@@ -147,7 +162,7 @@ function uvimrc(){
     vision
 }
 function termux(){
-    dialog --title "$title" --stderr --menu "$toolmenu_text" 16 55 10 1 "$termuxmenu_opt1" 2 "$termuxmenu_opt2" 2>$TMPDIR/xom/termuxopt
+    dialog --title "$title" --stderr --menu "$toolmenu_text" 16 55 10 0 "$termuxmenu_opt0" 1 "$termuxmenu_opt1" 2 "$termuxmenu_opt2" 2>$TMPDIR/xom/termuxopt
     if [ $? -ne 0 ]
     then
         rm $TMPDIR/xom/termuxopt
@@ -155,10 +170,35 @@ function termux(){
     else
         termux_opt=$(cat $TMPDIR/xom/termuxopt)
         case $termux_opt in
+            0)
+                progress "$dependency" 0
+                apt-get update >> /dev/null
+                apt-get install termux-tools >> /dev/null
+                progress "$run" 60
+                termux-setup-storage
+                progress "$complete" 100
+                sleep 1s
+                termux
+                ;;
             1)
                 extkeys
                 ;;
             2)
+                dialog --title "$title" --stderr --defaultno --yesno "$uvimrc_warn" 16 55
+                if [ $? -eq 0 ]
+                then
+                    progress "$dependency" 0
+                    apt update >> /dev/null
+                    apt-get install curl >> /dev/null
+                    progress "$install" 10
+                    cd ~
+                    sh -c "$(curl -fsSL https://github.com/Cabbagec/termux-ohmyzsh/raw/master/install.sh)"
+                    cd $OLDPWD
+                    progress "$installed" 100
+                    sleep 1s
+                    termux
+                fi
+                termux
                 ;;
             *)
                 ;;
@@ -176,16 +216,32 @@ function extkeys(){
         extkey_opt=$(cat $TMPDIR/xom/extkeyopt)
         case $extkey_opt in
             1)
-                mkdir ~/.termux
-                echo "\nextra-keys = [['ESC','/','-','HOME','UP','END','PGUP'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]\n" >> ~/.termux/termux.properties
+                progress "$run" 0
+                mkdir ~/.termux >> /dev/null
+                progress "$run" 50
+                echo "\nextra-keys = [['ESC','/','-','HOME','UP','END','PGUP'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']];\n" >> ~/.termux/termux.properties
+                progress "$complete" 100
+                sleep 1s
                 termux
                 ;;
             2)
+                progress "$run" 0
+                mkdir ~/.termux >> /dev/null
+                progress "$run" 50
+                echo "\nextra-keys = [['ESC','TAB','/','HOME','UP','END','PGUP','DEL','+','BKSP'],['CTRL','ALT','FN','LEFT','DOWN','RIGHT','PGDN',':','-','ENTER']];\n"
+                progress "$complete" 100
+                sleep 1s
+                termux
                 ;;
             *)
                 ;;
         esac
         rm $TMPDIR/xom/extkeyopt
     fi
+}
+function progress(){
+    # $1 - Text
+    # $2 - Progress
+    echo $2 | dialog --title "$title" --gauge "$1" 10 58
 }
 main
