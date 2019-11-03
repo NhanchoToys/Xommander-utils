@@ -3,6 +3,10 @@
 # By Tekin-Miz(WorldMoZara)
 source lang/en_utf-8.lang
 source lang/zh_utf-8.lang
+if [ "$LD_PRELOAD" = '/data/data/com.termux/files/usr/lib/libtermux-exec.so' ]
+then
+    istermux=1
+fi
 function main(){
     dialog --title "$title" --no-cancel --stderr --menu "$mainmenu_text" 16 55 10 1 "$mainmenu_opt1" 2 "$mainmenu_opt2" 3 "$mainmenu_opt3" 4 "$mainmenu_exit" 2>$PREFIX/tmp/mainopt
     main_opt=$(cat $PREFIX/tmp/mainopt)
@@ -86,6 +90,19 @@ function extras(){
         extra_opt=$(cat $PREFIX/tmp/extraopt)
         case $extra_opt in
             1)
+                if [ $istermux -eq 1 ]
+                then
+                    termux
+                else
+                    dialog --title "$title" --defaultno --stderr --yesno "$termux_warn" 16 55
+                    if [ $? -eq 0 ]
+                    then
+                        termux
+                    else
+                        extras
+                    fi
+                    :
+                fi
                 ;;
             2)
                 ;;
@@ -113,5 +130,8 @@ function uvimrc(){
         esac
     fi
     vision
+}
+function termux(){
+    :
 }
 main
