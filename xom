@@ -7,6 +7,7 @@ if [ "$LD_PRELOAD" = '/data/data/com.termux/files/usr/lib/libtermux-exec.so' ]
 then
     istermux=1
 fi
+mkdir -p $TMPDIR/xom
 function main(){
     dialog --title "$title" --no-cancel --stderr --menu "$mainmenu_text" 16 55 10 1 "$mainmenu_opt1" 2 "$mainmenu_opt2" 3 "$mainmenu_opt3" 4 "$mainmenu_exit" 2>$TMPDIR/xom/mainopt
     main_opt=$(cat $TMPDIR/xom/mainopt)
@@ -40,6 +41,20 @@ function tools(){
         tool_opt=$(cat $TMPDIR/xom/toolopt)
         case $tool_opt in
             1)
+                cp -f $(realpath $(dirname $0))/tools/.init.rc ~/
+                if test -e $PREFIX/bin/bash
+                then
+                    echo -e "\nsource ~/.init.rc" >> ~/.bashrc
+                fi
+                if test -e $PREFIX/bin/zsh
+                then
+                    echo -e "\nsource ~/.init.rc" >> ~/.zshrc
+                fi
+                if test -e $PREFIX/bin/fish
+                then
+                    mkdir -p $PREFIX/etc/fish
+                    echo -e "\nsource ~/.init.rc" >> $PREFIX/etc/fish/config.fish
+                fi
                 ;;
             2)
                 ;;
@@ -132,6 +147,45 @@ function uvimrc(){
     vision
 }
 function termux(){
-    :
+    dialog --title "$title" --stderr --menu "$toolmenu_text" 16 55 10 1 "$termuxmenu_opt1" 2 "$termuxmenu_opt2" 2>$TMPDIR/xom/termuxopt
+    if [ $? -ne 0 ]
+    then
+        rm $TMPDIR/xom/termuxopt
+        extras
+    else
+        termux_opt=$(cat $TMPDIR/xom/termuxopt)
+        case $termux_opt in
+            1)
+                extkeys
+                ;;
+            2)
+                ;;
+            *)
+                ;;
+        esac
+        rm $TMPDIR/xom/termuxopt
+    fi
+}
+function extkeys(){
+    dialog --title "$title" --stderr --menu "$extramenu_text" 16 55 10 1 "$extkeymenu_opt1" 2 "$extkeymenu_opt2" 2>$TMPDIR/xom/extkeyopt
+    if [ $? -ne 0 ]
+    then
+        rm $TMPDIR/xom/extkeyopt
+        termux
+    else
+        extkey_opt=$(cat $TMPDIR/xom/extkeyopt)
+        case $extkey_opt in
+            1)
+                mkdir ~/.termux
+                echo "\nextra-keys = [['ESC','/','-','HOME','UP','END','PGUP'],['TAB','CTRL','ALT','LEFT','DOWN','RIGHT','PGDN']]\n" >> ~/.termux/termux.properties
+                termux
+                ;;
+            2)
+                ;;
+            *)
+                ;;
+        esac
+        rm $TMPDIR/xom/extkeyopt
+    fi
 }
 main

@@ -10,3 +10,6 @@ uvimrc_warn='你想这样做吗？\n这可能会覆盖你的旧文件。\n如果
 termux_warn='Xommander 检测到你并不在 Termux 环境下。\n如果你能确定你真的在 Termux 环境中，请选择 "yes"，\n否则，请选择 "no"。'
 extramenu_text='请选择一个选项：'
 extramenu_opt1='为 Termux 适配的额外功能'
+termuxmenu_opt1='拓展虚拟按键'
+extkeymenu_opt1='常规拓展（7 * 2）'
+extkeymenu_opt2='更多拓展（10 * 2）(by Tekin-Miz)'

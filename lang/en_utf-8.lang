@@ -13,3 +13,7 @@ uvimrc_warn='Do you want to do this? It may cover your old files. If some of the
 termux_warn='Xommander detected that you are not in Termux environment! If you can sure you are really in Termux, choose "yes". If not, choose "no".'
 extramenu_text='Please select an option:'
 extramenu_opt1='Extra functions for Termux'
+termuxmenu_opt1='Extended Vitural Keyboard'
+termuxmenu_opt2='Termux-Oh-My-Zsh (by CabbageC)'
+extkeymenu_opt1='Regular extend (7 * 2)'
+extkeymenu_opt2='More extend (10 * 2) (by Tekin-Miz)'
